@@ -26,7 +26,6 @@
         w -= parseInt(style["padding-left"], 10);
         h -= parseInt(style["padding-top"], 10);
 
-
         return { w: w, h: h};
     }
 
@@ -38,9 +37,8 @@
      */
     function getPosition(element) {
 
-        var offset = $(element[0]).offset(),
-            x = offset.left;
-            y = offset.top;
+        var x = parseInt(element.attr("_left"),10),
+            y = parseInt(element.attr("_top"), 10);
 
         // adding the padding
         var style = window.getComputedStyle(element[0], null);
@@ -48,7 +46,6 @@
         y += parseInt(style["padding-top"], 10);
 
         return { x: x, y: y };
-
     }
 
 
@@ -71,12 +68,9 @@
 
         containerRaw.style.webkitTransformOrigin = "0% 0%";
 
-        // var theTransform = window.getComputedStyle(containerRaw).webkitTransform;
-        // var matrix = new WebKitCSSMatrix(theTransform);
-
         var matrix = new WebKitCSSMatrix();
 
-        var offsetY = document.body.scrollTop,
+        var offsetY = document.body.scrollTop;
             offsetX = document.body.scrollLeft;
 
         var scaleX = cameraW / targetSize.w,
@@ -156,7 +150,7 @@
 
                var result = data.match(url);
 
-               if (result !== undefined && result[0] !== undefined) {
+               if (result != null && result[0] !== undefined) {
                    successHandler(result[0]);
                }
            }
@@ -216,13 +210,26 @@
 
         var lastTarget;
 
+
+        // storing the starting positions
+        $(".Photo a").each( function (index, element) {
+
+           var img = $(element).find("img"),
+               offset = img.offset();
+
+           img.attr({
+               "_top": offset.top,
+               "_left": offset.left
+           });
+        });
+
         document.body.addEventListener('click', function (event) {
 
             if (event.altKey) {
 
                 var target = $(event.target);
 
-                if (event.target !== lastTarget && target.is("img")) {
+                if (event.target !== lastTarget && target.is(".Photo img")) {
 
                     moveTo(target, $("#" + wrapperId));
                     lastTarget = event.target;
