@@ -71,18 +71,20 @@
 
         containerRaw.style.webkitTransformOrigin = "0% 0%";
 
-        var cameraBorder = 20;
-
-
+        // var theTransform = window.getComputedStyle(containerRaw).webkitTransform;
+        // var matrix = new WebKitCSSMatrix(theTransform);
 
         var matrix = new WebKitCSSMatrix();
 
         var offsetY = document.body.scrollTop,
             offsetX = document.body.scrollLeft;
 
-        var scaleX = (cameraW - 2*cameraBorder) / targetSize.w,
-            scaleY = (cameraH - 2*cameraBorder) / targetSize.h,
+        var scaleX = cameraW / targetSize.w,
+            scaleY = cameraH / targetSize.h,
             scaleValue = scaleX < scaleY ? scaleX : scaleY;
+
+        // there will be a border
+        scaleValue *= 0.98;
 
 
         var animLength = 300 * scaleValue;
@@ -93,17 +95,12 @@
 
         $("#" + wrapperId).css("-webkit-transition", "-webkit-transform " + animLength + "ms ease");
 
-        var centerOffsetX = (cameraW - 2*cameraBorder - targetSize.w * scaleValue) / 2,
-            centerOffsetY = (cameraH - 2*cameraBorder - targetSize.h * scaleValue) / 2;
-
-        centerOffsetX = 0;
-        centerOffsetY = 0;
-
+        var centerOffsetX = (cameraW - targetSize.w * scaleValue) / 2,
+            centerOffsetY = (cameraH - targetSize.h * scaleValue) / 2;
 
         // translation
-        var tx = targetPos.x - (cameraX + offsetX) - centerOffsetX - cameraBorder;
-        var ty = targetPos.y - (cameraY + offsetY) - centerOffsetY - cameraBorder;
-
+        var tx = targetPos.x - (cameraX + offsetX) - centerOffsetX;
+        var ty = targetPos.y - (cameraY + offsetY) - centerOffsetY;
 
         // translation for scaling
         var ox = targetPos.x;
@@ -208,12 +205,12 @@
 
         init();
 
-        cameraW = window.outerWidth;
-        cameraH = window.outerHeight;
+        cameraW = window.innerWidth;
+        cameraH = window.innerHeight;
 
         window.onresize = function (event) {
-            cameraW = window.outerWidth;
-            cameraH = window.outerHeight;
+            cameraW = window.innerWidth;
+            cameraH = window.innerHeight;
         };
 
 
