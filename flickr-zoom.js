@@ -179,7 +179,8 @@
 
         // loading icon
         var loading_icon = $("<img>", {
-            src: "http://l.yimg.com/g/images/pulser2.gif"
+            src: "http://l.yimg.com/g/images/pulser2.gif",
+            className: "flickr-zoom-loading-icon"
         });
 
         loading_icon.css({ "position": "fixed",
@@ -187,10 +188,11 @@
                            "left": "4px"
         });
 
+        $(".flickr-zoom-loading-icon").remove();
         loading_icon.prependTo("body");
 
         $(target).load( function () {
-           loading_icon.remove();
+            $(".flickr-zoom-loading-icon").remove();
         });
 
 
