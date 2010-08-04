@@ -1,0 +1,19 @@
+{
+  "name": "Flickr Zoom",
+  "version": "0.1",
+  "description": "Flickr Zoom",
+  "content_scripts": [
+      {
+        "matches": ["http://www.flickr.com/*"],
+        "js": ["jquery-1.4.2.min.js", "flickr-zoom.js"]
+      }
+  ],
+  "permissions": [
+      "http://www.flickr.com/*"
+  ],
+  "icons": {
+      "16": "icon_16.png",
+      "48": "icon_48.png",
+      "128": "icon_128.png"
+   }  
+}
