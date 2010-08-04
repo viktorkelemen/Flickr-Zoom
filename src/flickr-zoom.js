@@ -56,6 +56,9 @@
 
         var containerRaw = container[0];
         containerRaw.style.webkitTransform = matrix;
+
+        // no loading icon
+        $(".flickr-zoom-loading-icon").remove();
     }
 
 
@@ -199,7 +202,11 @@
 
         getFullURL(src, function (url) {
             // when the image is loaded
-            target.attr("src", url);
+            if (target.attr("src") == url) {
+                $(".flickr-zoom-loading-icon").remove();
+            } else {
+                target.attr("src", url);
+            }
         });
 
     }
