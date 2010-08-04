@@ -7,6 +7,6 @@ cd ./src
 version=`eval cat manifest.json | grep "version" | cut -d \" -f 4`
 
 # compressing
-zip flick-zoom-chrome_$version.zip *
-mv flick-zoom-chrome_$version.zip ../bin
+zip flickr-zoom-chrome_$version.zip *
+mv flickr-zoom-chrome_$version.zip ../bin
 cd ..
