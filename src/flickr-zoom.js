@@ -2,7 +2,8 @@
 (function () {
 
     var LARGE_IMAGE_URL = /(http:\/\/.*_b\.jpg)/,
-        ORIGINAL_IMAGE_URL = /(http:\/\/.*_o\.jpg)/;
+        ORIGINAL_IMAGE_URL = /(http:\/\/.*_o\.jpg)/,
+        IMAGE_URL = /(http:\/\/.*_.\.jpg)/;
 
     var wrapperId = "flickr-zoom-wrapper";
 
@@ -143,12 +144,20 @@
 
         $.ajax({
            type: "GET",
-           url:  image_url + "/sizes/l/",
+           url:  image_url + "sizes/l/",
            success: function (data) {
 
-               var url = LARGE_IMAGE_URL;
+               var url = IMAGE_URL;
 
-               var result = data.match(url);
+               var result = data.match(LARGE_IMAGE_URL);
+
+               if (result === null) {
+                   result = data.match(ORIGINAL_IMAGE_URL);
+
+                   if (result === null) {
+                       result = data.match(IMAGE_URL);
+                   }
+               }
 
                if (result != null && result[0] !== undefined) {
                    successHandler(result[0]);
@@ -176,7 +185,8 @@
 
         loading_icon.css({ "position": "fixed",
                            "top": "4px",
-                           "left": "4px"
+                           "left": "4px",
+                           "z-index": 100
         });
 
         $(".flickr-zoom-loading-icon").remove();
@@ -212,7 +222,7 @@
 
 
         // storing the starting positions
-        $(".Photo a").each( function (index, element) {
+        $(".Photo a, .photo_container a").each( function (index, element) {
 
            var img = $(element).find("img"),
                offset = img.offset();
@@ -229,7 +239,7 @@
 
                 var target = $(event.target);
 
-                if (event.target !== lastTarget && target.is(".Photo img")) {
+                if (event.target !== lastTarget && target.is(".Photo img, .photo_container img")) {
 
                     moveTo(target, $("#" + wrapperId));
                     lastTarget = event.target;
