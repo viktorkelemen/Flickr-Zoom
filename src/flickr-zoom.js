@@ -1,6 +1,16 @@
 /* This is the first mockup of a chrome extension */
 (function () {
 
+
+
+    var IMAGE_URLS = [
+        /(http:\/\/.*_b\.jpg)/,
+        /(http:\/\/.*_o\.jpg)/,
+        /(http:\/\/.*_z\.jpg)/,
+        /(http:\/\/.*_.\.jpg)/
+    ];
+
+
     var LARGE_IMAGE_URL = /(http:\/\/.*_b\.jpg)/,
         ORIGINAL_IMAGE_URL = /(http:\/\/.*_o\.jpg)/,
         IMAGE_URL = /(http:\/\/.*_.\.jpg)/;
@@ -152,14 +162,14 @@
 
                var url = IMAGE_URL;
 
-               var result = data.match(LARGE_IMAGE_URL);
+               var result,
+                   i = 0,
+                   l = IMAGE_URLS.length;
 
-               if (result === null) {
-                   result = data.match(ORIGINAL_IMAGE_URL);
+               while (result == null && i < l) {
 
-                   if (result === null) {
-                       result = data.match(IMAGE_URL);
-                   }
+                   result = data.match(IMAGE_URLS[i]);
+                   i++;
                }
 
                if (result != null && result[0] !== undefined) {
