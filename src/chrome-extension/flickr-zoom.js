@@ -1,8 +1,6 @@
-/* This is the first mockup of a chrome extension */
 (function () {
 
-
-
+    // reg exps for images
     var IMAGE_URLS = [
         /(http:\/\/.*_b\.jpg)/,
         /(http:\/\/.*_o\.jpg)/,
@@ -11,12 +9,9 @@
     ];
 
 
-    var LARGE_IMAGE_URL = /(http:\/\/.*_b\.jpg)/,
-        ORIGINAL_IMAGE_URL = /(http:\/\/.*_o\.jpg)/,
-        IMAGE_URL = /(http:\/\/.*_.\.jpg)/;
-
     var wrapperId = "flickr-zoom-wrapper";
 
+    // camera position and size
     var cameraX = 0,
         cameraY = 0,
         cameraW = 800,
@@ -72,6 +67,12 @@
     }
 
 
+    /**
+     * Zooms the container to the target
+     *
+     * @param {Object} target
+     * @param {Object} container
+     */
     function moveTo(target, container) {
 
         var targetPos = getPosition(target);
@@ -160,8 +161,6 @@
            url:  image_url + "sizes/l/",
            success: function (data) {
 
-               var url = IMAGE_URL;
-
                var result,
                    i = 0,
                    l = IMAGE_URLS.length;
@@ -222,10 +221,14 @@
 
     function prepareZoomIn(target) {
         target.closest(".ResultsThumbsChild").find(".search-moreinfo-small").hide();
+
+        $("iframe").hide();
     }
 
     function prepareZoomOut(target) {
         target.closest(".ResultsThumbsChild").find(".search-moreinfo-small").show();
+
+        $("iframe").show();
     }
 
     $( function () {
