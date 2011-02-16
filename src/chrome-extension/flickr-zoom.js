@@ -1,4 +1,6 @@
-(function () {
+FLICKR_ZOOM = (function () {
+
+    var lastTarget;
 
     // reg exps for images
     var IMAGE_URLS = [
@@ -231,6 +233,30 @@
         $("iframe").show();
     }
 
+
+
+	function zoomTo(element) {
+
+		var target = $(element);
+
+	    if (target.is(".Photo img, .photo_container img")) {
+
+	        if (element !== lastTarget) {
+
+	            prepareZoomIn(target);
+	            moveTo(target, $("#" + wrapperId));
+
+	            lastTarget = element;
+	            replaceImage(target);
+	        } else {
+	            prepareZoomOut(target);
+	            moveToDefault($("#" + wrapperId));
+	            lastTarget = undefined;
+	        }
+	    }
+
+	}
+
     $( function () {
 
 
@@ -243,9 +269,6 @@
             cameraW = window.innerWidth;
             cameraH = window.innerHeight;
         };
-
-
-        var lastTarget;
 
 
         // storing the starting positions
@@ -262,34 +285,25 @@
 
         document.body.addEventListener('click', function (event) {
 
+
             if (event.altKey) {
 
-                var target = $(event.target);
-
-                if (target.is(".Photo img, .photo_container img")) {
-
-                    if (event.target !== lastTarget) {
-
-                        prepareZoomIn(target);
-                        moveTo(target, $("#" + wrapperId));
-
-                        lastTarget = event.target;
-                        replaceImage(target);
-                    } else {
-                        prepareZoomOut(target);
-                        moveToDefault($("#" + wrapperId));
-                        lastTarget = undefined;
-                    }
-
-                    event.cancelBubble = true;
-                    event.stopPropagation();
-                    event.preventDefault();
-                }
+				zoomTo(event.target);
+		        event.cancelBubble = true;
+		        event.stopPropagation();
+		        event.preventDefault();
 
             }
 
         },true);
 
     });
+
+	return {
+		zoomTo: zoomTo,
+		getCurrentImage: function () {
+			return lastTarget;
+		}
+	};
 
 })();
